@@ -1,0 +1,106 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+/* ===== STRUCT ===== */
+struct Pegawai {
+    string nama;
+    int jamKerja;
+    int honor;
+    int honorLembur;
+    int total;
+};
+
+/* ===== CLASS ===== */
+class Gaji {
+public:
+    int hitungHonor() {
+        return 48000;
+    }
+
+    int hitungLembur(int jam) {
+        if (jam > 8) {
+            return (jam - 8) * 40;
+        }
+        return 0;
+    }
+
+    int hitungTotal(int honor, int lembur) {
+        return honor + lembur;
+    }
+};
+
+int main() {
+    int pilihan;
+    char ulang;
+
+    do {
+        cout << "\n===== MENU UTAMA =====\n";
+        cout << "1. Input & Hitung Gaji Pegawai\n";
+        cout << "2. Keluar\n";
+        cout << "Pilih Menu: ";
+        cin >> pilihan;
+
+        if (pilihan == 1) {
+            int n;
+            cout << "\nMasukkan jumlah pegawai: ";
+            cin >> n;
+
+            Pegawai* p = new Pegawai[n];   // ARRAY DINAMIS
+            Gaji gaji;
+
+            /* ===== INPUT DATA ===== */
+            for (int i = 0; i < n; i++) {
+                cout << "\nPegawai ke-" << i + 1 << endl;
+                cout << "Nama        : ";
+                cin >> p[i].nama;
+
+                do { // VALIDASI INPUT
+                    cout << "Jam Kerja   : ";
+                    cin >> p[i].jamKerja;
+                } while (p[i].jamKerja < 0);
+
+                p[i].honor = gaji.hitungHonor();
+                p[i].honorLembur = gaji.hitungLembur(p[i].jamKerja);
+                p[i].total = gaji.hitungTotal(p[i].honor, p[i].honorLembur);
+            }
+
+            /* ===== OUTPUT TABEL ===== */
+            cout << "\nPT. Albany CL\n";
+            cout << "Tanggal : 28 Januari 2026\n\n";
+
+            cout << left << setw(5) << "No"
+                 << setw(10) << "Nama"
+                 << setw(10) << "Honor"
+                 << setw(12) << "Jam Kerja"
+                 << setw(15) << "Honor Lembur"
+                 << setw(10) << "Total\n";
+
+            cout << "============================================================\n";
+
+            int totalGaji = 0;
+            for (int i = 0; i < n; i++) {
+                cout << setw(5) << i + 1
+                     << setw(10) << p[i].nama
+                     << setw(10) << p[i].honor
+                     << setw(12) << p[i].jamKerja
+                     << setw(15) << p[i].honorLembur
+                     << setw(10) << p[i].total << endl;
+
+                totalGaji += p[i].total;
+            }
+
+            cout << "============================================================\n";
+            cout << "Total Honor Pegawai Sebesar : Rp " << totalGaji << endl;
+
+            delete[] p; // HAPUS MEMORY
+        }
+
+        cout << "\nKembali ke menu? (y/n): ";
+        cin >> ulang;
+
+    } while (ulang == 'y' || ulang == 'Y');
+
+    cout << "\nProgram selesai.\n";
+    return 0;
+}
